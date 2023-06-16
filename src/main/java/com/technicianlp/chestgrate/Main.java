@@ -1,5 +1,6 @@
 package com.technicianlp.chestgrate;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import cpw.mods.fml.common.Mod;
@@ -40,14 +41,17 @@ public class Main {
             "ALCHGRATE",
             new ItemStack(this.block, 1),
             new AspectList().add(Aspect.ORDER, 50)
-                .add(Aspect.ENTROPY, 50),
-            "VGV",
+                .add(Aspect.ENTROPY, 50)
+                .add(Aspect.EARTH, 25),
+            "TGT",
             "VSV",
-            "VCV",
+            "TCT",
             'V',
-            new ItemStack(ConfigItems.itemResource, 1, 16),
+            "plateVoid",
+            'T',
+            "screwThaumium",
             'G',
-            new ItemStack(ConfigBlocks.blockMetalDevice, 1, 5),
+            new ItemStack((Item) Item.itemRegistry.getObject("Botania:openCrate")),
             'S',
             new ItemStack(ConfigItems.itemShard, 1, 6),
             'C',
