@@ -40,8 +40,8 @@ public class Main {
         ShapedArcaneRecipe recipe = ThaumcraftApi.addArcaneCraftingRecipe(
             "ALCHGRATE",
             new ItemStack(this.block, 1),
-            new AspectList().add(Aspect.ORDER, 25)
-                .add(Aspect.ENTROPY, 25)
+            new AspectList().add(Aspect.ORDER, 50)
+                .add(Aspect.ENTROPY, 50)
                 .add(Aspect.EARTH, 25),
             "TGT",
             "VSV",
