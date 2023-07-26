@@ -1,5 +1,6 @@
 package com.technicianlp.chestgrate;
 
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -8,16 +9,22 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
+import thaumcraft.api.research.ResearchCategories;
 import thaumcraft.api.research.ResearchItem;
 import thaumcraft.api.research.ResearchPage;
 import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.config.ConfigItems;
 
-@Mod(modid = "alchgrate", name = "Alchemical Grate", version = Tags.VERSION, dependencies = "required-after:Thaumcraft")
+@Mod(
+    modid = "alchgrate",
+    name = "Alchemical Grate",
+    version = Tags.VERSION,
+    dependencies = "required-after:Forge@[10.13.4.1448,);required-after:Thaumcraft@[4.2.3.5,)")
 public class Main {
 
     @Mod.Instance
@@ -36,7 +43,22 @@ public class Main {
     }
 
     @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+    }
+
+    @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        ResearchCategories.registerCategory("BASICS", new ResourceLocation("thaumcraft", "textures/items/thaumonomiconcheat.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        ResearchCategories.registerCategory("THAUMATURGY", new ResourceLocation("thaumcraft", "textures/misc/r_thaumaturgy.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        ResearchCategories.registerCategory("ALCHEMY", new ResourceLocation("thaumcraft", "textures/misc/r_crucible.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        String category = "ARTIFICE";
+        ResearchCategories.registerCategory(
+            category,
+            new ResourceLocation("thaumcraft", "textures/misc/r_artifice.png"),
+            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        ResearchCategories.registerCategory("GOLEMANCY", new ResourceLocation("thaumcraft", "textures/misc/r_golemancy.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        ResearchCategories.registerCategory("ELDRITCH", new ResourceLocation("thaumcraft", "textures/misc/r_eldritch.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchbackeldritch.png"));
+
         ShapedArcaneRecipe recipe = ThaumcraftApi.addArcaneCraftingRecipe(
             "ALCHGRATE",
             new ItemStack(this.block, 1),
@@ -57,27 +79,31 @@ public class Main {
             'C',
             new ItemStack(ConfigBlocks.blockChestHungry));
 
-        AspectList aspects = new AspectList().add(Aspect.VOID, 3)
-            .add(Aspect.AURA, 3)
-            .add(Aspect.MAGIC, 3)
-            .add(Aspect.ORDER, 3)
-            .add(Aspect.ENTROPY, 3);
+
         ResearchItem research = new ResearchItem(
             "ALCHGRATE",
-            "ARTIFICE",
-            aspects,
-            3,
-            -2,
+            category,
+            new AspectList().add(Aspect.VOID, 1)
+                .add(Aspect.AURA, 1)
+                .add(Aspect.MAGIC, 1)
+                .add(Aspect.ORDER, 1)
+                .add(Aspect.ENTROPY, 1),
+            4,
+            -1,
             0,
-            new ItemStack(this.block, 1));
-        ResearchPage[] pages = new ResearchPage[] { new ResearchPage("tc.research_page.ALCHGRATE.1"),
-            new ResearchPage(recipe) };
-        research.setParents("ADVALCHEMYFURNACE", "HUNGRYCHEST", "GRATE")
-            .setPages(pages)
+            new ItemStack(block));
+
+        ResearchPage page1, page2;
+        page1 = new ResearchPage("tc.research_page.ALCHGRATE.1");
+        page2 = new ResearchPage(recipe);
+
+        research
+            .setPages(page1, page2)
+            .setParents("ADVALCHEMYFURNACE", "HUNGRYCHEST", "GRATE")
             .setConcealed()
-            .setRound()
             .registerResearchItem();
 
+        ResearchCategories.addResearch(research);
     }
 
 }
