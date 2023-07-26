@@ -1,15 +1,15 @@
 package com.technicianlp.chestgrate;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.util.ResourceLocation;
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -43,21 +43,35 @@ public class Main {
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
-    }
+    public void init(FMLInitializationEvent event) {}
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        ResearchCategories.registerCategory("BASICS", new ResourceLocation("thaumcraft", "textures/items/thaumonomiconcheat.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-        ResearchCategories.registerCategory("THAUMATURGY", new ResourceLocation("thaumcraft", "textures/misc/r_thaumaturgy.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-        ResearchCategories.registerCategory("ALCHEMY", new ResourceLocation("thaumcraft", "textures/misc/r_crucible.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        ResearchCategories.registerCategory(
+            "BASICS",
+            new ResourceLocation("thaumcraft", "textures/items/thaumonomiconcheat.png"),
+            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        ResearchCategories.registerCategory(
+            "THAUMATURGY",
+            new ResourceLocation("thaumcraft", "textures/misc/r_thaumaturgy.png"),
+            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        ResearchCategories.registerCategory(
+            "ALCHEMY",
+            new ResourceLocation("thaumcraft", "textures/misc/r_crucible.png"),
+            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
         String category = "ARTIFICE";
         ResearchCategories.registerCategory(
             category,
             new ResourceLocation("thaumcraft", "textures/misc/r_artifice.png"),
             new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-        ResearchCategories.registerCategory("GOLEMANCY", new ResourceLocation("thaumcraft", "textures/misc/r_golemancy.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-        ResearchCategories.registerCategory("ELDRITCH", new ResourceLocation("thaumcraft", "textures/misc/r_eldritch.png"), new ResourceLocation("thaumcraft", "textures/gui/gui_researchbackeldritch.png"));
+        ResearchCategories.registerCategory(
+            "GOLEMANCY",
+            new ResourceLocation("thaumcraft", "textures/misc/r_golemancy.png"),
+            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
+        ResearchCategories.registerCategory(
+            "ELDRITCH",
+            new ResourceLocation("thaumcraft", "textures/misc/r_eldritch.png"),
+            new ResourceLocation("thaumcraft", "textures/gui/gui_researchbackeldritch.png"));
 
         ShapedArcaneRecipe recipe = ThaumcraftApi.addArcaneCraftingRecipe(
             "ALCHGRATE",
@@ -79,7 +93,6 @@ public class Main {
             'C',
             new ItemStack(ConfigBlocks.blockChestHungry));
 
-
         ResearchItem research = new ResearchItem(
             "ALCHGRATE",
             category,
@@ -97,8 +110,7 @@ public class Main {
         page1 = new ResearchPage("tc.research_page.ALCHGRATE.1");
         page2 = new ResearchPage(recipe);
 
-        research
-            .setPages(page1, page2)
+        research.setPages(page1, page2)
             .setParents("ADVALCHEMYFURNACE", "HUNGRYCHEST", "GRATE")
             .setConcealed()
             .registerResearchItem();
