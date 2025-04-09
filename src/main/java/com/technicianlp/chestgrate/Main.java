@@ -1,9 +1,11 @@
 package com.technicianlp.chestgrate;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -73,6 +75,13 @@ public class Main {
             new ResourceLocation("thaumcraft", "textures/misc/r_eldritch.png"),
             new ResourceLocation("thaumcraft", "textures/gui/gui_researchbackeldritch.png"));
 
+        ItemStack dropper;
+        if (Loader.isModLoaded("Botania")) {
+            dropper = new ItemStack((Item) Item.itemRegistry.getObject("Botania:openCrate"));
+        } else {
+            dropper = new ItemStack(Blocks.dropper);
+        }
+
         ShapedArcaneRecipe recipe = ThaumcraftApi.addArcaneCraftingRecipe(
             "ALCHGRATE",
             new ItemStack(this.block, 1),
@@ -87,7 +96,7 @@ public class Main {
             'T',
             "screwThaumium",
             'G',
-            new ItemStack((Item) Item.itemRegistry.getObject("Botania:openCrate")),
+            dropper,
             'S',
             new ItemStack(ConfigItems.itemShard, 1, 6),
             'C',
