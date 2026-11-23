@@ -3,7 +3,6 @@ package com.technicianlp.chestgrate;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -36,9 +35,9 @@ public class Main {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        this.block = new BlockChestGrate();
+        block = new BlockChestGrate();
 
-        GameRegistry.registerBlock(this.block, "alchgrate");
+        GameRegistry.registerBlock(block, "alchgrate");
         GameRegistry.registerTileEntity(TileChestGrate.class, "alchgrate.alchgrate");
 
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
@@ -49,58 +48,47 @@ public class Main {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        ResearchCategories.registerCategory(
-            "BASICS",
-            new ResourceLocation("thaumcraft", "textures/items/thaumonomiconcheat.png"),
-            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-        ResearchCategories.registerCategory(
-            "THAUMATURGY",
-            new ResourceLocation("thaumcraft", "textures/misc/r_thaumaturgy.png"),
-            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-        ResearchCategories.registerCategory(
-            "ALCHEMY",
-            new ResourceLocation("thaumcraft", "textures/misc/r_crucible.png"),
-            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
         String category = "ARTIFICE";
-        ResearchCategories.registerCategory(
-            category,
-            new ResourceLocation("thaumcraft", "textures/misc/r_artifice.png"),
-            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-        ResearchCategories.registerCategory(
-            "GOLEMANCY",
-            new ResourceLocation("thaumcraft", "textures/misc/r_golemancy.png"),
-            new ResourceLocation("thaumcraft", "textures/gui/gui_researchback.png"));
-        ResearchCategories.registerCategory(
-            "ELDRITCH",
-            new ResourceLocation("thaumcraft", "textures/misc/r_eldritch.png"),
-            new ResourceLocation("thaumcraft", "textures/gui/gui_researchbackeldritch.png"));
-
-        ItemStack dropper;
-        if (Loader.isModLoaded("Botania")) {
-            dropper = new ItemStack((Item) Item.itemRegistry.getObject("Botania:openCrate"));
+        ShapedArcaneRecipe recipe;
+        if (Loader.isModLoaded("dreamcraft")) {
+            recipe = ThaumcraftApi.addArcaneCraftingRecipe(
+                "ALCHGRATE",
+                new ItemStack(block),
+                new AspectList().add(Aspect.ORDER, 50)
+                    .add(Aspect.ENTROPY, 50)
+                    .add(Aspect.EARTH, 25),
+                "TGT",
+                "VSV",
+                "TCT",
+                'V',
+                "plateVoid",
+                'T',
+                "screwThaumium",
+                'G',
+                Loader.isModLoaded("Botania") ? new ItemStack((Item) Item.itemRegistry.getObject("Botania:openCrate"))
+                    : new ItemStack(Blocks.dropper),
+                'S',
+                new ItemStack(ConfigItems.itemShard, 1, 6),
+                'C',
+                new ItemStack(ConfigBlocks.blockChestHungry));
         } else {
-            dropper = new ItemStack(Blocks.dropper);
+            recipe = ThaumcraftApi.addArcaneCraftingRecipe(
+                "ALCHGRATE",
+                new ItemStack(block),
+                new AspectList().add(Aspect.ORDER, 50)
+                    .add(Aspect.ENTROPY, 50),
+                "VGV",
+                "VSV",
+                "VCV",
+                'V',
+                new ItemStack(ConfigItems.itemResource, 1, 16),
+                'G',
+                new ItemStack(ConfigBlocks.blockMetalDevice, 1, 5),
+                'S',
+                new ItemStack(ConfigItems.itemShard, 1, 6),
+                'C',
+                new ItemStack(ConfigBlocks.blockChestHungry));
         }
-
-        ShapedArcaneRecipe recipe = ThaumcraftApi.addArcaneCraftingRecipe(
-            "ALCHGRATE",
-            new ItemStack(this.block, 1),
-            new AspectList().add(Aspect.ORDER, 50)
-                .add(Aspect.ENTROPY, 50)
-                .add(Aspect.EARTH, 25),
-            "TGT",
-            "VSV",
-            "TCT",
-            'V',
-            "plateVoid",
-            'T',
-            "screwThaumium",
-            'G',
-            dropper,
-            'S',
-            new ItemStack(ConfigItems.itemShard, 1, 6),
-            'C',
-            new ItemStack(ConfigBlocks.blockChestHungry));
 
         ResearchItem research = new ResearchItem(
             "ALCHGRATE",
